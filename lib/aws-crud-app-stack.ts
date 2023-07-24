@@ -14,6 +14,10 @@ export class AwsCrudAppStack extends cdk.Stack {
 
     const table = new dynamodb.Table(this, 'Users', {
       partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
+      // sortKey: {
+      //   name: 'created_at',
+      //   type: dynamodb.AttributeType.NUMBER
+      // },
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
@@ -53,10 +57,10 @@ export class AwsCrudAppStack extends cdk.Stack {
       }
     })
 
-    table.grantFullAccess(listUsersLambda);
-    table.grantFullAccess(createUserLambda);
-    table.grantFullAccess(getUserLambda);
-    table.grantFullAccess(deleteUserLambda);
+    table.grantReadWriteData(listUsersLambda);
+    table.grantReadWriteData(createUserLambda);
+    table.grantReadWriteData(getUserLambda);
+    table.grantReadWriteData(deleteUserLambda);
 
     const usersResource = api.root.addResource('users');
 
